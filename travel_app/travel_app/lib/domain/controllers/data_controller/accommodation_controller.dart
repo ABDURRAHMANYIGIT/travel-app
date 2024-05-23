@@ -19,4 +19,8 @@ class AccommodationController extends GetxController {
     return await Future.delayed(Durations.extralong4,
         () => _accommodationList.value = DummyContent().dummyAccommodations);
   }
+
+  Future<AccommodationObject> getAccommodationById({required int id}) async {
+    return _accommodationList.where((element) => element.id == id).first;
+  }
 }

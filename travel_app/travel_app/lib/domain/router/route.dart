@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../../presentation/screens/design_router_screen.dart';
 import '../../presentation/screens/landing/landing_screen.dart';
 import '../../presentation/screens/listing/listing_screen.dart';
+import '../../presentation/screens/accommodation_detail/accommodation_detail_screen.dart';
 import '../../presentation/screens/onboarding_screen/onboarding_screen.dart';
 import '../../presentation/screens/splash/splash_screen.dart';
 import '../../presentation/screens/ui_test/ui_test.dart';
@@ -31,7 +32,7 @@ class AppRouter {
   static const String designRoute = '/design_route';
   static const String uiTest = '/ui_test';
   static const String listingRoute = '/listing';
-  static const String contentDetailRoute = '/content-detail';
+  static const String accommodationDetailRoute = '/accommodation-detail';
 /* 
   static final List<Bindings> _homeBindings = <Bindings>[
      XPageBinding(),
@@ -64,6 +65,10 @@ class AppRouter {
     GetPage<dynamic>(
       name: listingRoute,
       page: () => const ListingScreen(),
+    ),
+    GetPage<dynamic>(
+      name: accommodationDetailRoute,
+      page: () => const AccommodationDetailScreen(),
     ),
   ];
 }
