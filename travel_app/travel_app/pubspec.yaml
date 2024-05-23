@@ -57,6 +57,9 @@ dependencies:
   # Notification
   flutter_local_notifications: 15.1.0+1
   mixpanel_flutter: ^2.2.0
+  json_annotation: ^4.9.0
+  cached_network_image: ^3.3.1
+  flutter_cache_manager: ^3.3.1
 
 
 dev_dependencies:
@@ -64,6 +67,7 @@ dev_dependencies:
     sdk: flutter
 
   flutter_lints: ^4.0.0
+  json_serializable: ^6.8.0
 
 flutter:
 

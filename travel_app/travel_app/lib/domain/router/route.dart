@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import '../../presentation/screens/design_router_screen.dart';
 import '../../presentation/screens/landing/landing_screen.dart';
+import '../../presentation/screens/listing/listing_screen.dart';
 import '../../presentation/screens/onboarding_screen/onboarding_screen.dart';
 import '../../presentation/screens/splash/splash_screen.dart';
 import '../../presentation/screens/ui_test/ui_test.dart';
@@ -59,6 +60,10 @@ class AppRouter {
     GetPage<dynamic>(
       name: uiTest,
       page: () => const UiTestScreen(),
+    ),
+    GetPage<dynamic>(
+      name: listingRoute,
+      page: () => const ListingScreen(),
     ),
   ];
 }

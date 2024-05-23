@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 
+import 'accommodation_binding.dart';
 import 'auth_binding.dart';
 import 'example_binding.dart';
 import 'purchase_binding.dart';
@@ -14,5 +15,6 @@ class StartUpBindings extends Bindings {
     ExampleBinding().dependencies();
     SplashBinding().dependencies();
     PurchaseBinding().dependencies();
+    AccommodationBinding().dependencies();
   }
 }
