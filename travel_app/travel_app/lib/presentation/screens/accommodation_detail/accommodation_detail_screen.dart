@@ -1,26 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 
-import '../../../domain/controllers/screen_controllers/accommodation_detail_screen_controller.dart';
-import '../../../resources/styles/colors.dart';
-import '../../../resources/styles/text_styles.dart';
-import '../../global_components/texts/custom_text.dart';
-import '../../layouts/main_layout.dart';
+import '../../../data/models/accommodation.dart';
+import 'widgets/content.dart';
 
 class AccommodationDetailScreen extends StatelessWidget {
-  const AccommodationDetailScreen({super.key});
-
+  const AccommodationDetailScreen(
+      {super.key, required this.accommodationObject});
+  final AccommodationObject accommodationObject;
   @override
   Widget build(BuildContext context) {
-    final AccommodationDetailScreenController screenController = Get.put(
-        AccommodationDetailScreenController(int.parse(Get.parameters['id']!)));
-    return Obx(() {
-      return MainLayout(
-        content: CustomText(
-          screenController.accommodationObject?.name ?? '',
-          style: AppTextStyle.h5(color: AppColors.black),
+    return Hero(
+      tag: accommodationObject.id.toString(),
+      child: Material(
+          child: SizedBox(
+        height: Get.height,
+        child: Stack(
+          children: [
+            // Sliding container from the bottom
+            AccommodationDetailContent(
+                accommodationObject: accommodationObject),
+            Container(
+              height: MediaQuery.of(context).size.height / 2,
+              decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.vertical(
+                    bottom: Radius.circular(20),
+                  ),
+                  image: accommodationObject.photo != null
+                      ? DecorationImage(
+                          image: NetworkImage(accommodationObject.photo!),
+                          fit: BoxFit.cover,
+                        )
+                      : null),
+            ),
+          ],
         ),
-      );
-    });
+      )),
+    );
   }
 }

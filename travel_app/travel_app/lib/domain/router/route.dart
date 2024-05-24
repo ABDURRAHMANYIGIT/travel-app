@@ -66,9 +66,5 @@ class AppRouter {
       name: listingRoute,
       page: () => const ListingScreen(),
     ),
-    GetPage<dynamic>(
-      name: accommodationDetailRoute,
-      page: () => const AccommodationDetailScreen(),
-    ),
   ];
 }

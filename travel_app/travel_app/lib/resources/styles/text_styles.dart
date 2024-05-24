@@ -40,7 +40,7 @@ class AppTextStyle {
   }) {
     return TextStyle(
       fontFamily: fontFamily,
-      color: color ?? AppColors.white,
+      color: color ?? AppColors.black,
       fontSize: size ?? fontSizeHeading1,
       fontWeight: weight ?? fontBold,
       overflow: overflow ?? TextOverflow.ellipsis,
@@ -62,7 +62,7 @@ class AppTextStyle {
   }) {
     return TextStyle(
       fontFamily: fontFamily,
-      color: color ?? AppColors.white,
+      color: color ?? AppColors.black,
       fontSize: size ?? fontSizeHeading2,
       fontWeight: weight ?? fontBold,
       overflow: overflow ?? TextOverflow.ellipsis,
@@ -84,7 +84,7 @@ class AppTextStyle {
   }) {
     return TextStyle(
       fontFamily: fontFamily,
-      color: color ?? AppColors.white,
+      color: color ?? AppColors.black,
       fontSize: size ?? fontSizeHeading3,
       fontWeight: weight ?? fontBold,
       overflow: overflow ?? TextOverflow.ellipsis,
@@ -106,7 +106,7 @@ class AppTextStyle {
   }) {
     return TextStyle(
       fontFamily: fontFamily,
-      color: color ?? AppColors.white,
+      color: color ?? AppColors.black,
       fontSize: size ?? fontSizeHeading4,
       fontWeight: weight ?? fontBold,
       overflow: overflow ?? TextOverflow.ellipsis,
@@ -128,7 +128,7 @@ class AppTextStyle {
   }) {
     return TextStyle(
       fontFamily: fontFamily,
-      color: color ?? AppColors.white,
+      color: color ?? AppColors.black,
       fontSize: size ?? fontSizeHeading5,
       fontWeight: weight ?? fontBold,
       overflow: overflow ?? TextOverflow.ellipsis,
@@ -151,7 +151,7 @@ class AppTextStyle {
   }) {
     return TextStyle(
       fontFamily: fontFamily,
-      color: color ?? AppColors.white,
+      color: color ?? AppColors.black,
       fontSize: size ?? fontSizeHeading6,
       fontWeight: weight ?? fontBold,
       overflow: overflow ?? TextOverflow.ellipsis,
@@ -174,7 +174,7 @@ class AppTextStyle {
   }) {
     return TextStyle(
       fontFamily: fontFamily,
-      color: color ?? AppColors.white,
+      color: color ?? AppColors.black,
       fontSize: size ?? fontSizeBodyXLarge,
       fontWeight: weight ?? fontBold,
       overflow: overflow ?? TextOverflow.ellipsis,
@@ -197,7 +197,7 @@ class AppTextStyle {
   }) {
     return TextStyle(
       fontFamily: fontFamily,
-      color: color ?? AppColors.white,
+      color: color ?? AppColors.black,
       fontSize: size ?? fontSizeBodyLarge,
       fontWeight: weight ?? fontBold,
       overflow: overflow ?? TextOverflow.ellipsis,
@@ -220,7 +220,7 @@ class AppTextStyle {
   }) {
     return TextStyle(
       fontFamily: fontFamily,
-      color: color ?? AppColors.white,
+      color: color ?? AppColors.black,
       fontSize: size ?? fontSizeBodyMedium,
       fontWeight: weight ?? fontBold,
       overflow: overflow ?? TextOverflow.ellipsis,
@@ -243,7 +243,7 @@ class AppTextStyle {
   }) {
     return TextStyle(
       fontFamily: fontFamily,
-      color: color ?? AppColors.white,
+      color: color ?? AppColors.black,
       fontSize: size ?? fontSizeBodySmall,
       fontWeight: weight ?? fontBold,
       overflow: overflow ?? TextOverflow.ellipsis,
@@ -266,7 +266,7 @@ class AppTextStyle {
   }) {
     return TextStyle(
       fontFamily: fontFamily,
-      color: color ?? AppColors.white,
+      color: color ?? AppColors.black,
       fontSize: size ?? fontSizeBodyXSmall,
       fontWeight: weight ?? fontBold,
       overflow: overflow ?? TextOverflow.ellipsis,

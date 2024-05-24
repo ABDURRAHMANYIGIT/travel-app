@@ -6,6 +6,7 @@ import '../../../resources/file_paths/icons.dart';
 import '../../../resources/styles/colors.dart';
 import '../../global_components/image_asset.dart';
 import '../../layouts/main_layout.dart';
+import '../accommodation_detail/accommodation_detail_screen.dart';
 import 'widgets/accommodation_card.dart';
 
 class ListingScreen extends StatelessWidget {
@@ -42,8 +43,26 @@ class ListingScreen extends StatelessWidget {
                 final item = _screenController.accommodationList[index];
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 16.0),
-                  child: AccommodationCard(
-                    accommodation: item,
+                  child: Hero(
+                    tag: item.id.toString(),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Material(
+                        child: AccommodationCard(
+                          accommodation: item,
+                          onTap: () {
+                            Navigator.of(context).push(PageRouteBuilder(
+                                transitionDuration: const Duration(seconds: 1),
+                                reverseTransitionDuration:
+                                    const Duration(seconds: 1),
+                                pageBuilder: (_, __, ___) =>
+                                    AccommodationDetailScreen(
+                                      accommodationObject: item,
+                                    )));
+                          },
+                        ),
+                      ),
+                    ),
                   ),
                 );
               }),
