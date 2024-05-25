@@ -42,7 +42,7 @@ class AccommodationCard extends StatelessWidget {
                         child: Row(
                           children: [
                             const ImageAsset(
-                              AppIcons.star,
+                              AppIcons.starFilled,
                               color: Colors.amber,
                             ),
                             const SizedBox(

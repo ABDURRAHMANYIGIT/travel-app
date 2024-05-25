@@ -31,8 +31,7 @@ class AccommodationDetailNameAndRatingSection extends StatelessWidget {
             Row(
               children: [
                 const ImageAsset(
-                  AppIcons.star,
-                  width: 20,
+                  AppIcons.starFilled,
                 ),
                 const SizedBox(
                   width: 6,

@@ -5,14 +5,18 @@ import '../../../../global_components/image_asset.dart';
 import '../../../../global_components/texts/custom_text.dart';
 
 class AccommodationDetailGalleryTabContent extends StatelessWidget {
-  const AccommodationDetailGalleryTabContent(
-      {super.key, required this.accommodationObject});
+  const AccommodationDetailGalleryTabContent({
+    super.key,
+    required this.accommodationObject,
+  });
+
   final AccommodationObject accommodationObject;
 
   @override
   Widget build(BuildContext context) {
     return accommodationObject.photos != null
         ? GridView.builder(
+            physics: const NeverScrollableScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2, // Number of columns
               crossAxisSpacing: 10.0, // Spacing between columns

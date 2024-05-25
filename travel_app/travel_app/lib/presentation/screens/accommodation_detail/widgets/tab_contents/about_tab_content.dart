@@ -10,11 +10,12 @@ class AccommodationDetailAboutTabContent extends StatelessWidget {
   final AccommodationObject accommodationObject;
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return ListView(
+      physics: const NeverScrollableScrollPhysics(),
       children: [
         CustomText(
           'About',
+          textAlign: TextAlign.left,
           style: AppTextStyle.bodyXLarge(),
         ),
         const SizedBox(

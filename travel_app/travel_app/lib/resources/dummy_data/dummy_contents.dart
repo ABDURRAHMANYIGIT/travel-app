@@ -24,7 +24,7 @@ class DummyContent {
       location: "Maui, Hawaii",
       rate: 3.5,
       description:
-          "Indulge in the ultimate luxury experience at this beachfront villa.",
+          "Escape to a world where luxury meets the tranquility of the sea breeze, where every moment is a celebration of elegance and comfort. Welcome to our exquisite beachfront villa, a sanctuary nestled along the pristine shores, promising an unforgettable retreat in paradise. Step into a world of opulence as you enter our meticulously designed villa. Boasting 2 bedrooms and 3 bathrooms, our spacious retreat is ideal for families, groups of friends, or couples seeking a romantic getaway. Each room is thoughtfully appointed with luxurious furnishings, plush bedding, and modern amenities, ensuring a stay of unparalleled comfort.",
       photos: [
         "https://images.unsplash.com/photo-1469796466635-455ede028aca?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fEx1eHVyeSUyMEJlYWNoZnJvbnQlMjBWaWxsYXxlbnwwfHwwfHx8MA%3D%3D",
         "https://images.unsplash.com/photo-1585544314038-a0d3769d0193?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8THV4dXJ5JTIwQmVhY2hmcm9udCUyMFZpbGxhfGVufDB8fDB8fHww",
