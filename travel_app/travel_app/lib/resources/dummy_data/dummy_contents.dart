@@ -9,9 +9,13 @@ class DummyContent {
       rate: 4.5,
       description:
           "Escape to this cozy cabin nestled in the heart of the Rocky Mountains.",
-      photos: ["photo1.jpg", "photo2.jpg", "photo3.jpg"],
+      photos: [
+        "https://plus.unsplash.com/premium_photo-1680098057172-c1a73ab2c131?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Q296eSUyMENhYmluJTIwUmV0cmVhdHxlbnwwfHwwfHx8MA%3D%3D",
+        "https://images.unsplash.com/photo-1714128489170-1a1a5c6b1555?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fENvenklMjBDYWJpbiUyMFJldHJlYXR8ZW58MHx8MHx8fDA%3D",
+        "https://plus.unsplash.com/premium_photo-1684496317995-bf0661d8e31d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fENvenklMjBDYWJpbiUyMFJldHJlYXR8ZW58MHx8MHx8fDA%3D"
+      ],
       photo:
-          "https://plus.unsplash.com/premium_photo-1686090450467-3212162803e5?q=80&w=1587&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          "https://images.unsplash.com/photo-1525113990976-399835c43838?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fENvenklMjBDYWJpbiUyMFJldHJlYXR8ZW58MHx8MHx8fDA%3D",
       costPerPerson: 40,
     ),
     AccommodationObject(
@@ -21,7 +25,11 @@ class DummyContent {
       rate: 3.5,
       description:
           "Indulge in the ultimate luxury experience at this beachfront villa.",
-      photos: ["photo4.jpg", "photo5.jpg", "photo6.jpg"],
+      photos: [
+        "https://images.unsplash.com/photo-1469796466635-455ede028aca?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fEx1eHVyeSUyMEJlYWNoZnJvbnQlMjBWaWxsYXxlbnwwfHwwfHx8MA%3D%3D",
+        "https://images.unsplash.com/photo-1585544314038-a0d3769d0193?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8THV4dXJ5JTIwQmVhY2hmcm9udCUyMFZpbGxhfGVufDB8fDB8fHww",
+        "https://plus.unsplash.com/premium_photo-1697730288131-6684ca63584b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8THV4dXJ5JTIwQmVhY2hmcm9udCUyMFZpbGxhfGVufDB8fDB8fHww"
+      ],
       photo:
           "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       costPerPerson: 100,

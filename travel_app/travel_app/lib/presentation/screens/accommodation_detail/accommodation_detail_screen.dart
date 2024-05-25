@@ -3,6 +3,9 @@ import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 
 import '../../../data/models/accommodation.dart';
+import '../../../domain/controllers/screen_controllers/accommodation_screen_controller.dart';
+import '../../../resources/file_paths/icons.dart';
+import '../../global_components/image_asset.dart';
 import 'widgets/content.dart';
 
 class AccommodationDetailScreen extends StatelessWidget {
@@ -11,32 +14,55 @@ class AccommodationDetailScreen extends StatelessWidget {
   final AccommodationObject accommodationObject;
   @override
   Widget build(BuildContext context) {
+    Get.put(AccommodationScreenController());
     return Hero(
       tag: accommodationObject.id.toString(),
       child: Material(
-          child: SizedBox(
-        height: Get.height,
-        child: Stack(
-          children: [
-            // Sliding container from the bottom
-            AccommodationDetailContent(
-                accommodationObject: accommodationObject),
-            Container(
-              height: MediaQuery.of(context).size.height / 2,
-              decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.vertical(
-                    bottom: Radius.circular(20),
+        child: CustomScrollView(
+          slivers: <Widget>[
+            SliverAppBar(
+              leadingWidth: 64,
+              leading: Padding(
+                padding: const EdgeInsets.only(left: 12.0),
+                child: GestureDetector(
+                  onTap: () => Navigator.pop(context),
+                  child: Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                        color: Colors.grey.withOpacity(0.7),
+                        borderRadius: BorderRadius.circular(12)),
+                    child: const ImageAsset(
+                      AppIcons.menu,
+                    ),
                   ),
-                  image: accommodationObject.photo != null
-                      ? DecorationImage(
-                          image: NetworkImage(accommodationObject.photo!),
-                          fit: BoxFit.cover,
-                        )
-                      : null),
+                ),
+              ),
+              pinned: true,
+              floating: true,
+              collapsedHeight: Get.height * 0.1,
+              expandedHeight: Get.height * 0.4,
+              flexibleSpace: Stack(
+                fit: StackFit.expand,
+                children: [
+                  // Background image
+                  if (accommodationObject.photo != null)
+                    Image.network(
+                      accommodationObject.photo!,
+                      fit: BoxFit.cover,
+                    ),
+                  // Overlaying text
+                ],
+              ),
+            ),
+            // SliverList for the content
+            SliverFillRemaining(
+              child: AccommodationDetailContent(
+                accommodationObject: accommodationObject,
+              ),
             ),
           ],
         ),
-      )),
+      ),
     );
   }
 }

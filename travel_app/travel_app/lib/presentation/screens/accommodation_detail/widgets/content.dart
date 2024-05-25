@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
+import '../../../../data/enums/accommodation_detail_tab_enum.dart';
 import '../../../../data/models/accommodation.dart';
+import '../../../../domain/controllers/screen_controllers/accommodation_screen_controller.dart';
 import '../../../../resources/styles/colors.dart';
-import '../../../../resources/styles/text_styles.dart';
-import '../../../global_components/image_asset.dart';
-import '../../../global_components/texts/custom_text.dart';
 import 'name_and_rating.dart';
+import 'tab_contents/about_tab_content.dart';
+import 'tab_contents/gallery_tab_content.dart';
+import 'tab_contents/reviews_tab_content.dart';
+import 'tabs.dart';
 
 class AccommodationDetailContent extends StatelessWidget {
   const AccommodationDetailContent(
@@ -14,44 +18,41 @@ class AccommodationDetailContent extends StatelessWidget {
   final AccommodationObject accommodationObject;
   @override
   Widget build(BuildContext context) {
-    return AnimatedPositioned(
-      duration: Durations.extralong2,
-      bottom: 0,
-      left: 0,
-      right: 0,
-      height: Get.height * 0.6,
-      child: Container(
-          decoration: const BoxDecoration(
-            color: AppColors.white,
+    final AccommodationScreenController screenController = Get.find();
+    return Container(
+        decoration: const BoxDecoration(
+          color: AppColors.white,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AccommodationDetailNameAndRatingSection(
+                  accommodationObject: accommodationObject),
+              const SizedBox(
+                height: 24,
+              ),
+              const AccommodationDetailTabs(),
+              const SizedBox(
+                height: 24,
+              ),
+              Expanded(
+                child: Obx(() {
+                  return screenController.selectedTab ==
+                          AccommodationDetailTabEnum.about
+                      ? AccommodationDetailAboutTabContent(
+                          accommodationObject: accommodationObject)
+                      : screenController.selectedTab ==
+                              AccommodationDetailTabEnum.gallery
+                          ? AccommodationDetailGalleryTabContent(
+                              accommodationObject: accommodationObject)
+                          : AccommodationDetailReviewsTabContent(
+                              accommodationObject: accommodationObject);
+                }),
+              )
+            ],
           ),
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-                vertical: Get.height * 0.12, horizontal: 24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                AccommodationDetailNameAndRatingSection(
-                    accommodationObject: accommodationObject),
-                const SizedBox(
-                  height: 24,
-                ),
-                CustomText(
-                  'About',
-                  style: AppTextStyle.bodyXLarge(),
-                ),
-                const SizedBox(
-                  height: 6,
-                ),
-                CustomText(
-                  accommodationObject.description ?? '',
-                  textAlign: TextAlign.left,
-                  textOverflow: TextOverflow.visible,
-                  style:
-                      AppTextStyle.bodyMedium(weight: AppTextStyle.fontLight),
-                )
-              ],
-            ),
-          )),
-    );
+        ));
   }
 }

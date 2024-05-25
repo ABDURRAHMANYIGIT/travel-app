@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import '../../presentation/screens/design_router_screen.dart';
 import '../../presentation/screens/landing/landing_screen.dart';
 import '../../presentation/screens/listing/listing_screen.dart';
-import '../../presentation/screens/accommodation_detail/accommodation_detail_screen.dart';
 import '../../presentation/screens/onboarding_screen/onboarding_screen.dart';
 import '../../presentation/screens/splash/splash_screen.dart';
 import '../../presentation/screens/ui_test/ui_test.dart';

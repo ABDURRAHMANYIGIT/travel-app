@@ -45,9 +45,10 @@ class ListingScreen extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 16.0),
                   child: Hero(
                     tag: item.id.toString(),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Material(
+                    child: Material(
+                      type: MaterialType.transparency,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
                         child: AccommodationCard(
                           accommodation: item,
                           onTap: () {

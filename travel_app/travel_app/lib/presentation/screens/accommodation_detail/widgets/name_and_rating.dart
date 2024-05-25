@@ -13,41 +13,50 @@ class AccommodationDetailNameAndRatingSection extends StatelessWidget {
   final AccommodationObject accommodationObject;
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        CustomText(
-          accommodationObject.name ?? '',
-          maxLines: null,
-          textAlign: TextAlign.left,
-          textOverflow: TextOverflow.visible,
-          style: AppTextStyle.h3(
-            color: AppColors.black,
-          ),
-        ),
-        Row(
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const ImageAsset(
-              AppIcons.star,
-              width: 20,
-            ),
-            const SizedBox(
-              width: 6,
-            ),
             CustomText(
-              accommodationObject.rate.toString(),
-              style: AppTextStyle.bodyMedium(
-                  color: AppColors.grey, weight: AppTextStyle.fontLight),
+              accommodationObject.name ?? '',
+              maxLines: null,
+              textAlign: TextAlign.left,
+              textOverflow: TextOverflow.visible,
+              style: AppTextStyle.h4(
+                color: AppColors.black,
+              ),
             ),
-            const SizedBox(
-              width: 6,
-            ),
-            CustomText(
-              'Ratings',
-              style: AppTextStyle.bodyMedium(
-                  color: AppColors.grey, weight: AppTextStyle.fontLight),
-            ),
+            Row(
+              children: [
+                const ImageAsset(
+                  AppIcons.star,
+                  width: 20,
+                ),
+                const SizedBox(
+                  width: 6,
+                ),
+                CustomText(
+                  accommodationObject.rate.toString(),
+                  style: AppTextStyle.bodyMedium(
+                      color: AppColors.grey, weight: AppTextStyle.fontLight),
+                ),
+                const SizedBox(
+                  width: 6,
+                ),
+                CustomText(
+                  'Ratings',
+                  style: AppTextStyle.bodyMedium(
+                      color: AppColors.grey, weight: AppTextStyle.fontLight),
+                ),
+              ],
+            )
           ],
+        ),
+        CustomText(
+          '\$${accommodationObject.costPerPerson.toString()}',
+          style: AppTextStyle.h6(),
         )
       ],
     );
