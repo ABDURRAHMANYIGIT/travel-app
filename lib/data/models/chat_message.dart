@@ -1,13 +1,13 @@
-class ChatMessage {
-  const ChatMessage({
+class MessageObject {
+  const MessageObject({
     this.id,
     required this.idFrom,
     required this.idTo,
     required this.content,
     this.isDeletedBy,
   });
-  factory ChatMessage.fromJson(Map<String, dynamic> json) {
-    return ChatMessage(
+  factory MessageObject.fromJson(Map<String, dynamic> json) {
+    return MessageObject(
       id: json['id'] as String,
       idFrom: json['id_from'] as String,
       idTo: json['id_to'] as String,
@@ -31,7 +31,7 @@ class ChatMessage {
     };
   }
 
-  ChatMessage copyWith(
+  MessageObject copyWith(
       {final String? id,
       final String? idFrom,
       final String? idTo,
@@ -39,7 +39,7 @@ class ChatMessage {
       final DateTime? timeStamp,
       final DateTime? readTimestamp,
       final List<String>? isDeletedBy}) {
-    return ChatMessage(
+    return MessageObject(
       id: id ?? this.id,
       idFrom: idFrom ?? this.idFrom,
       idTo: idTo ?? this.idTo,

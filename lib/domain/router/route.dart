@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../presentation/screens/chats/chats_screen.dart';
+import '../../presentation/screens/chats/detail/chat_detail_screen.dart';
 import '../../presentation/screens/design_router_screen.dart';
 import '../../presentation/screens/landing/landing_screen.dart';
 import '../../presentation/screens/listing/listing_screen.dart';
+import '../../presentation/screens/login/login_screen.dart';
 import '../../presentation/screens/onboarding_screen/onboarding_screen.dart';
 import '../../presentation/screens/splash/splash_screen.dart';
 import '../../presentation/screens/ui_test/ui_test.dart';
@@ -27,6 +30,8 @@ class AppRouter {
   static const String forgotPassRoute = '/forgot_pass';
 
   static const String settingsRoute = '/settings';
+  static const String chatsRoute = '/chats';
+  static const String chatDetailRoute = '/chat-detail';
 
   static const String designRoute = '/design_route';
   static const String uiTest = '/ui_test';
@@ -64,6 +69,18 @@ class AppRouter {
     GetPage<dynamic>(
       name: listingRoute,
       page: () => const ListingScreen(),
+    ),
+    GetPage<dynamic>(
+      name: loginRoute,
+      page: () => const LoginScreen(),
+    ),
+    GetPage<dynamic>(
+      name: chatsRoute,
+      page: () => const ChatsScreen(),
+    ),
+    GetPage<dynamic>(
+      name: chatDetailRoute,
+      page: () => const ChatDetailScreen(),
     ),
   ];
 }

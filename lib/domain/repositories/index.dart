@@ -1,3 +1,5 @@
+import '../../data/models/chat_message.dart';
+import '../../data/models/chat_object.dart';
 import '../../data/models/collection.dart';
 import '../../data/models/user_object.dart';
 import '../../data/repositories/api.dart';
@@ -22,5 +24,37 @@ class DatabaseServices implements BaseServices {
   @override
   Future<List<CollectionObject>> getCollections({String? languageCode}) async {
     return api.getCollections(languageCode: languageCode);
+  }
+
+  @override
+  Future<bool> login({required String email, required String password}) {
+    return api.login(email: email, password: password);
+  }
+
+  @override
+  Future<List<UserObject>> getAllUsers() {
+    return api.getAllUsers();
+  }
+
+  @override
+  Future<List<ChatObject>> getAllChats() {
+    return api.getAllChats();
+  }
+
+  @override
+  Future<ChatObject?> createNewChat(
+      {required int userOneId, required int userTwoId}) {
+    return api.createNewChat(userOneId: userOneId, userTwoId: userTwoId);
+  }
+
+  @override
+  Future<UserObject?> getOtherUser({required int userId}) {
+    return api.getOtherUser(userId: userId);
+  }
+
+  @override
+  Future<List<MessageObject>> getChatMessages(
+      {required int chatId, int? page}) {
+    return api.getChatMessages(chatId: chatId, page: page);
   }
 }
