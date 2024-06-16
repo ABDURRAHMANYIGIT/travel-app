@@ -9,7 +9,6 @@ import '../../domain/repositories/base_services.dart';
 import '../../resources/config/app_logic.dart';
 import '../models/chat_message.dart';
 import '../models/chat_object.dart';
-import '../models/collection.dart';
 import '../models/user_object.dart';
 
 part 'headers.dart';
@@ -63,36 +62,6 @@ class API implements BaseServices {
   }
 
   @override
-  Future<List<CollectionObject>> getCollections({String? languageCode}) async {
-    final List<CollectionObject> result = <CollectionObject>[];
-    try {
-      final Uri endpoint = Uri.parse('$domain/level/get-levels');
-      if (languageCode != null) {
-        endpoint.replace(
-          queryParameters: <String, String>{'language_code': languageCode},
-        );
-      }
-      final http.Response response = await http.get(
-        endpoint,
-        headers: _Headers().getHeaderUnauth(),
-      );
-
-      final dynamic body = convert.jsonDecode(response.body);
-      if (response.statusCode == 200) {
-        for (final dynamic element in body['data'] as List<dynamic>) {
-          result
-              .add(CollectionObject.fromJson(element as Map<String, dynamic>));
-        }
-      } else {
-        Tools().handleError(body: body as Map<String, dynamic>);
-      }
-    } catch (e) {
-      log(e.toString());
-    }
-    return result;
-  }
-
-  @override
   Future<bool> login({
     required String email,
     required String password,
@@ -133,7 +102,7 @@ class API implements BaseServices {
     if (token != null) {
       try {
         final http.Response response = await http.get(
-          Uri.parse('$domain/user/get-user'),
+          Uri.parse('$domain/user/get-all'),
           headers: _Headers().getHeaderWithAuthToken(token),
         );
         final dynamic body = convert.jsonDecode(response.body);
@@ -167,7 +136,7 @@ class API implements BaseServices {
           headers: _Headers().getHeaderWithAuthToken(token),
         );
         final dynamic body = convert.jsonDecode(response.body);
-        if (response.statusCode == 200) {
+        if (response.statusCode == 200 && body != "[]") {
           for (var object in body['data']) {
             result.add(ChatObject.fromJson(object));
           }
@@ -191,15 +160,18 @@ class API implements BaseServices {
     if (token != null) {
       try {
         final http.Response response = await http.post(
-            Uri.parse('$domain/chat'),
-            headers: _Headers().getHeaderWithAuthToken(token),
-            body: {
+          Uri.parse('$domain/chat'),
+          headers: _Headers().getHeaderWithAuthToken(token),
+          body: convert.jsonEncode(
+            <String, dynamic>{
               'user_one_id': userOneId,
               'user_two_id': userTwoId,
-            });
+            },
+          ),
+        );
         final dynamic body = convert.jsonDecode(response.body);
         if (response.statusCode == 200) {
-          result = body['data'] as ChatObject;
+          result = ChatObject.fromJson(body['data'] as Map<String, dynamic>);
         } else {
           Tools().handleError(body: body as Map<String, dynamic>);
         }
@@ -245,7 +217,7 @@ class API implements BaseServices {
 
     if (token != null) {
       try {
-        final http.Response response = await http.post(
+        final http.Response response = await http.get(
           Uri.parse('$domain/chat/$chatId/messages?page=$page'),
           headers: _Headers().getHeaderWithAuthToken(token),
         );

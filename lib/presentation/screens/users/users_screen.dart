@@ -13,20 +13,24 @@ class UsersScreen extends StatelessWidget {
     final UsersScreenController usersScreenController =
         Get.put(UsersScreenController());
     return MainLayout(
-      content: Column(
-        children: [
-          ...usersScreenController.users.map((user) => Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(user?.name ?? ''),
-                  CustomButton(
-                      child: Text('Go to messages'),
-                      buttonName: 'buttonName',
-                      onTap: () =>
-                          usersScreenController.onTapSendMessage(user!.id!))
-                ],
-              ))
-        ],
+      content: SafeArea(
+        child: Obx(() {
+          return Column(
+            children: [
+              ...usersScreenController.users.map((user) => Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(user?.name ?? ''),
+                      CustomButton(
+                          child: Text('Go to messages'),
+                          buttonName: 'buttonName',
+                          onTap: () =>
+                              usersScreenController.onTapSendMessage(user!.id!))
+                    ],
+                  ))
+            ],
+          );
+        }),
       ),
     );
   }

@@ -10,6 +10,7 @@ import '../../presentation/screens/login/login_screen.dart';
 import '../../presentation/screens/onboarding_screen/onboarding_screen.dart';
 import '../../presentation/screens/splash/splash_screen.dart';
 import '../../presentation/screens/ui_test/ui_test.dart';
+import '../../presentation/screens/users/users_screen.dart';
 
 class AppRouter {
   AppRouter._();
@@ -31,6 +32,7 @@ class AppRouter {
 
   static const String settingsRoute = '/settings';
   static const String chatsRoute = '/chats';
+  static const String usersRoute = '/users';
   static const String chatDetailRoute = '/chat-detail';
 
   static const String designRoute = '/design_route';
@@ -73,6 +75,10 @@ class AppRouter {
     GetPage<dynamic>(
       name: loginRoute,
       page: () => const LoginScreen(),
+    ),
+    GetPage<dynamic>(
+      name: usersRoute,
+      page: () => const UsersScreen(),
     ),
     GetPage<dynamic>(
       name: chatsRoute,

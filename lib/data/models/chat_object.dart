@@ -8,8 +8,8 @@ class ChatObject {
   ChatObject.fromJson(Map<String, dynamic> json) {
     try {
       id = json['id'] as int?;
-      userOneId = json['user_one_id'] as String?;
-      userTwoId = json['user_two_id'] as String?;
+      userOneId = json['user_one_id'] as int?;
+      userTwoId = json['user_two_id'] as int?;
       lastMessage = json['last_message'] as MessageObject?;
     } catch (e) {
       log(e.toString());
@@ -17,8 +17,8 @@ class ChatObject {
   }
 
   int? id;
-  String? userOneId;
-  String? userTwoId;
+  int? userOneId;
+  int? userTwoId;
   MessageObject? lastMessage;
 
   Map<String, dynamic> toJson() {
