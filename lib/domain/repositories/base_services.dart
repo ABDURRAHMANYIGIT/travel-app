@@ -12,4 +12,6 @@ abstract class BaseServices {
   Future<ChatObject?> createNewChat(
       {required int userOneId, required int userTwoId});
   Future<List<MessageObject>> getChatMessages({required int chatId, int? page});
+  Future<bool> broadcastAuthentication(
+      {required String channelName, required String socketID});
 }
