@@ -132,7 +132,7 @@ class API implements BaseServices {
     if (token != null) {
       try {
         final http.Response response = await http.get(
-          Uri.parse('$domain/chat'),
+          Uri.parse('$domain/chats'),
           headers: _Headers().getHeaderWithAuthToken(token),
         );
         final dynamic body = convert.jsonDecode(response.body);
@@ -160,7 +160,7 @@ class API implements BaseServices {
     if (token != null) {
       try {
         final http.Response response = await http.post(
-          Uri.parse('$domain/chat'),
+          Uri.parse('$domain/chats'),
           headers: _Headers().getHeaderWithAuthToken(token),
           body: convert.jsonEncode(
             <String, dynamic>{
@@ -218,7 +218,7 @@ class API implements BaseServices {
     if (token != null) {
       try {
         final http.Response response = await http.get(
-          Uri.parse('$domain/chat/$chatId/messages?page=$page'),
+          Uri.parse('$domain/chats/$chatId/messages?page=$page'),
           headers: _Headers().getHeaderWithAuthToken(token),
         );
 
@@ -228,6 +228,74 @@ class API implements BaseServices {
           for (var object in body['data']) {
             result.add(MessageObject.fromJson(object));
           }
+        } else {
+          Tools().handleError(body: body as Map<String, dynamic>);
+        }
+      } catch (e) {
+        log(e.toString());
+      }
+    }
+    return result;
+  }
+
+  @override
+  Future<bool> broadcastAuthentication(
+      {required String channelName, required String socketID}) async {
+    String? token;
+    token = await SharedPreference().getToken();
+    bool result = false;
+
+    if (token != null) {
+      try {
+        final http.Response response = await http.post(
+          Uri.parse('$domain/broadcasting/auth'),
+          headers: _Headers().getHeaderWithAuthToken(token),
+          body: convert.jsonEncode(
+            <String, dynamic>{
+              'channel_name': channelName,
+              'socket_id': socketID,
+            },
+          ),
+        );
+
+        final dynamic body = convert.jsonDecode(response.body);
+
+        if (response.statusCode == 200) {
+          result = true;
+        } else {
+          Tools().handleError(body: body as Map<String, dynamic>);
+        }
+      } catch (e) {
+        log(e.toString());
+      }
+    }
+    return result;
+  }
+
+  @override
+  Future<bool> sendMessage(
+      {required String message, required int receiverId}) async {
+    String? token;
+    token = await SharedPreference().getToken();
+    bool result = false;
+
+    if (token != null) {
+      try {
+        final http.Response response = await http.post(
+          Uri.parse('$domain/message/send'),
+          headers: _Headers().getHeaderWithAuthToken(token),
+          body: convert.jsonEncode(
+            <String, dynamic>{
+              'content': message,
+              'receiver_id': receiverId,
+            },
+          ),
+        );
+
+        final dynamic body = convert.jsonDecode(response.body);
+
+        if (response.statusCode == 200) {
+          result = true;
         } else {
           Tools().handleError(body: body as Map<String, dynamic>);
         }

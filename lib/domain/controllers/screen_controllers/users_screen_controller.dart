@@ -20,9 +20,8 @@ class UsersScreenController extends GetxController {
   }
 
   Future<void> onTapSendMessage(int userId) async {
-    var existingChat = _chatsDataController.chats.firstWhereOrNull((chat) =>
-        (chat.userTwoId == userId.toString()) ||
-        (chat.userOneId == userId.toString()));
+    var existingChat = _chatsDataController.chats.firstWhereOrNull(
+        (chat) => (chat.userTwoId == userId) || (chat.userOneId == userId));
 
     existingChat ??= await _chatsDataController.createNewChat(
         userOneId: _authController.getAuthUser!.id!, userTwoId: userId);

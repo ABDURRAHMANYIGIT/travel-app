@@ -51,4 +51,16 @@ class DatabaseServices implements BaseServices {
       {required int chatId, int? page}) {
     return api.getChatMessages(chatId: chatId, page: page);
   }
+
+  @override
+  Future<bool> broadcastAuthentication(
+      {required String channelName, required String socketID}) {
+    return api.broadcastAuthentication(
+        channelName: channelName, socketID: socketID);
+  }
+
+  @override
+  Future<bool> sendMessage({required String message, required int receiverId}) {
+    return api.sendMessage(message: message, receiverId: receiverId);
+  }
 }
