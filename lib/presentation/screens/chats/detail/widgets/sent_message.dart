@@ -9,7 +9,7 @@ class SentMessage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.blue,
-      child: Text(messageObject.content),
+      child: Text(messageObject.content ?? ''),
     );
   }
 }

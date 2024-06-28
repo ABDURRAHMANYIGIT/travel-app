@@ -20,38 +20,54 @@ class ChatDetailScreen extends StatelessWidget {
             targetChatId: int.parse(Get.parameters['chatId']!),
             targetUserId: int.parse(Get.parameters['userId']!)));
     return MainLayout(
+      bottomSheet: SizedBox(
+        height: kBottomNavigationBarHeight * 3,
+        child: Column(
+          children: [
+            CustomTextFormField(
+                controller:
+                    chatDetailScreenController.messageEditingController),
+            CustomButton(
+                onTap: chatDetailScreenController.sendMessage,
+                child: Text('send message'),
+                buttonName: 'send message button')
+          ],
+        ),
+      ),
       appBar: CustomAppBar(
         appbarType: AppbarType.withTitle,
         title: chatDetailScreenController.targetUser?.name ?? '',
       ),
-      content: Column(
-        children: [
-          chatDetailScreenController.messages.isNotEmpty
-              ? SizedBox(
-                  height: Get.height * 0.7,
-                  child: ListView.builder(
+      content: Obx(() {
+        return Column(
+          children: [
+            chatDetailScreenController.messages.isNotEmpty
+                ? Container(
+                    color: Colors.amber,
+                    height: Get.height * 0.7,
+                    width: Get.width,
+                    child: ListView.builder(
+                      itemCount: chatDetailScreenController
+                          .messages.length, // Ensure you have the itemCount
                       itemBuilder: (BuildContext ctx, int index) {
-                    final element = chatDetailScreenController.messages[index];
-                    if (element.idFrom ==
-                        chatDetailScreenController.targetUser?.id.toString()) {
-                      ReceivedMessage(
-                        messageObject: element,
-                      );
-                    } else {
-                      SentMessage(messageObject: element);
-                    }
-                    return null;
-                  }),
-                )
-              : Text('no message yet'),
-          CustomTextFormField(
-              controller: chatDetailScreenController.messageEditingController),
-          CustomButton(
-              onTap: chatDetailScreenController.sendMessage,
-              child: Text('send message'),
-              buttonName: 'send message button')
-        ],
-      ),
+                        final element =
+                            chatDetailScreenController.messages[index];
+                        if (element.idFrom ==
+                            chatDetailScreenController.targetUser?.id
+                                .toString()) {
+                          return ReceivedMessage(
+                            messageObject: element,
+                          );
+                        } else {
+                          return SentMessage(messageObject: element);
+                        }
+                      },
+                    ),
+                  )
+                : Text('no message yet'),
+          ],
+        );
+      }),
     );
   }
 }

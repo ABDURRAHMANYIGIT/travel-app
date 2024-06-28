@@ -10,7 +10,7 @@ class ReceivedMessage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.blueGrey,
-      child: Text(messageObject.content),
+      child: Text(messageObject.content ?? ''),
     );
   }
 }

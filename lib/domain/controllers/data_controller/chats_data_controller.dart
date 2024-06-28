@@ -20,8 +20,9 @@ class ChatsDataController extends GetxController {
   final RxnString _socketID = RxnString();
   final Rxn<dynamic> _websocketDecodedMessage = Rxn<dynamic>();
   final RxnString _newWebSocketEvent = RxnString('');
-  final RxList<Map<Map<String, ChatObject>, Map<String, List<MessageObject>>>>
-      _messagesPairedWithChats = RxList.empty();
+  final RxList<Map<String, dynamic>> _messagesPairedWithChats = RxList.empty();
+  List<Map<String, dynamic>> get messagesPairedWithChats =>
+      _messagesPairedWithChats;
   final Rxn<PusherEvent> _pusherEvent = Rxn<PusherEvent>();
   PusherEvent? get pusherEvent => _pusherEvent.value;
 
@@ -128,8 +129,11 @@ class ChatsDataController extends GetxController {
       {required int userOneId, required int userTwoId}) async {
     final newChat = await _databaseServices.createNewChat(
         userOneId: userOneId, userTwoId: userTwoId);
-    await getChats();
-    update();
+    if (newChat != null) {
+      _messagesPairedWithChats.add({'chat': newChat, 'messages': []});
+      await getChats();
+      update();
+    }
     return newChat;
   }
 
@@ -138,10 +142,28 @@ class ChatsDataController extends GetxController {
     final result = await _databaseServices.sendMessage(
         message: message, receiverId: receiverId);
     if (result) {
-      final targetChat = _chats.where((chat) =>
-          chat.userOneId == receiverId || chat.userTwoId == receiverId);
-      _messagesPairedWithChats.add(element)
+      final targetChatIndex = _messagesPairedWithChats.indexWhere((element) =>
+          element['chat'].userOneId == receiverId ||
+          element['chat'].userTwoId == receiverId);
+
+      if (targetChatIndex != -1) {
+        // Chat found, update its messages
+        if (_authController.getAuthUser?.id != null) {
+          final newMessage = MessageObject()
+            ..content = message
+            ..idFrom = _authController.getAuthUser!.id.toString()
+            ..idTo = receiverId.toString();
+          messagesPairedWithChats[targetChatIndex]['messages'].add(newMessage);
+          // Force update the list to trigger UI update
+          messagesPairedWithChats[targetChatIndex] = Map<String, dynamic>.from(
+              messagesPairedWithChats[targetChatIndex]);
+        }
+      } else {
+        // Chat not found
+        log('CHAT NOT FOUND');
+      }
     }
+    update();
     return result;
   }
 }

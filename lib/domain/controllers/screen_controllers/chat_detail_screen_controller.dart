@@ -13,26 +13,29 @@ class ChatDetailScreenController extends GetxController {
   final TextEditingController messageEditingController =
       TextEditingController();
   final DatabaseServices _databaseServices = DatabaseServices();
-  final ChatsDataController chatsDataController = Get.find();
+  final ChatsDataController _chatsDataController = Get.find();
   final int targetChatId;
   final int targetUserId;
   final Rxn<UserObject> _targetUser = Rxn();
   UserObject? get targetUser => _targetUser.value;
-  final RxList<MessageObject> _messages = RxList([]);
-  List<MessageObject> get messages => _messages;
+  List<MessageObject> get messages {
+    final chatEntry = _chatsDataController.messagesPairedWithChats.firstWhere(
+      (entry) => entry['chat'].id == targetChatId,
+    );
+
+    return (chatEntry['messages'] as List).cast<MessageObject>();
+  }
 
   @override
   void onInit() async {
     _targetUser.value =
         await _databaseServices.getOtherUser(userId: targetUserId);
-    _messages.value =
-        await _databaseServices.getChatMessages(chatId: targetChatId);
 
     super.onInit();
   }
 
   Future<bool> sendMessage() async {
-    return chatsDataController.sendMessage(
+    return _chatsDataController.sendMessage(
         message: messageEditingController.text, receiverId: targetUserId);
   }
 }
