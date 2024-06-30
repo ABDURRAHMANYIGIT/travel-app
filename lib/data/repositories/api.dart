@@ -261,6 +261,8 @@ class API implements BaseServices {
         final dynamic body = convert.jsonDecode(response.body);
 
         if (response.statusCode == 200) {
+          final String token = '${body['auth']}';
+          SharedPreference().setBroadcastToken(token);
           result = true;
         } else {
           Tools().handleError(body: body as Map<String, dynamic>);

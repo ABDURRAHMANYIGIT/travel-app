@@ -62,4 +62,22 @@ class SharedPreference {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.setString('app_language', appLanguage);
   }
+
+  Future<bool> setBroadcastToken(String? token) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (token == null) {
+      return deleteToken();
+    }
+    return prefs.setString('broadcast_token', token);
+  }
+
+  Future<bool> deleteBroadcastToken() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.remove('broadcast_token');
+  }
+
+  Future<String?> getBroadcastToken() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('broadcast_token');
+  }
 }

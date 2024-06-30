@@ -19,9 +19,14 @@ class ChatDetailScreenController extends GetxController {
   final Rxn<UserObject> _targetUser = Rxn();
   UserObject? get targetUser => _targetUser.value;
   List<MessageObject> get messages {
-    final chatEntry = _chatsDataController.messagesPairedWithChats.firstWhere(
+    final chatEntry =
+        _chatsDataController.messagesPairedWithChats.firstWhereOrNull(
       (entry) => entry['chat'].id == targetChatId,
     );
+
+    if (chatEntry == null) {
+      return []; // Return an empty list or handle this case based on your application logic
+    }
 
     return (chatEntry['messages'] as List).cast<MessageObject>();
   }

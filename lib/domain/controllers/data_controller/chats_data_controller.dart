@@ -8,6 +8,7 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 import '../../../data/enums/pusher_event_enum.dart';
 import '../../../data/models/chat_message.dart';
 import '../../../data/models/chat_object.dart';
+import '../../helpers/shared_preference.dart';
 import '../../repositories/index.dart';
 import 'auth_controller.dart';
 
@@ -42,8 +43,23 @@ class ChatsDataController extends GetxController {
   Future<void> subscribeToChannels() async {
     if (_socketID.value != null) {
       for (var chat in _chats) {
-        _databaseServices.broadcastAuthentication(
+        await _databaseServices.broadcastAuthentication(
             channelName: 'chat_${chat.id}', socketID: _socketID.value!);
+
+        final String? broadcastToken =
+            await SharedPreference().getBroadcastToken();
+
+        _channel.sink.add(
+          jsonEncode(
+            <String, dynamic>{
+              'event': 'pusher:subscribe',
+              'data': <String, dynamic>{
+                'channel': 'chat_${chat.id}',
+                'auth': broadcastToken
+              }
+            },
+          ),
+        );
       }
     }
   }
@@ -80,11 +96,11 @@ class ChatsDataController extends GetxController {
   }
 
   void subscriptionSucceeded() {
-    log(_websocketDecodedMessage.toString());
+    log(_websocketDecodedMessage.value?.toString() ?? 'No message');
   }
 
   void connectionEstablished() {
-    if (_websocketDecodedMessage.value['data'] != null) {
+    if (_websocketDecodedMessage.value?['data'] != null) {
       final dynamic data = _websocketDecodedMessage.value['data'] as dynamic;
       final dynamic dataMap = jsonDecode(data as String);
       _socketID.value = dataMap['socket_id'] as String;
@@ -95,6 +111,13 @@ class ChatsDataController extends GetxController {
   void listenToWebSocket() {
     _channel.stream.listen(
       (dynamic message) {
+        // Check if the message contains the string 'ping'
+        if (message.toString().contains('ping')) {
+          // If it does, send a response with the string 'pong'
+          _channel.sink.add(json.encode(
+            {"event": "pusher:pong"},
+          ));
+        }
         log('Received message: $message');
         final dynamic decodedMessage = jsonDecode(message as String);
         _websocketDecodedMessage.value = decodedMessage;
@@ -121,7 +144,7 @@ class ChatsDataController extends GetxController {
   }
 
   Future<void> getChats() async {
-    _chats.value = await _databaseServices.getAllChats();
+    _chats.value = await _databaseServices.getAllChats() ?? [];
     update();
   }
 
