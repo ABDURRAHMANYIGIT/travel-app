@@ -8,7 +8,7 @@ class SentMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.blue,
+      color: Colors.red,
       child: Text(messageObject.content ?? ''),
     );
   }

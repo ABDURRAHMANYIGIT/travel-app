@@ -5,18 +5,20 @@ class MessageObject {
 
   MessageObject.fromJson(Map<String, dynamic> json) {
     try {
-      id = json['id'] as String?;
-      idFrom = json['sender_id'] as String?;
-      idTo = json['receiver_id'] as String?;
+      id = json['id'] as int?;
+      chatId = json['chat_id'] as int?;
+      idFrom = json['sender_id'] as int?;
+      idTo = json['receiver_id'] as int?;
       content = json['content'] as String?;
     } catch (e) {
       log(e.toString());
     }
   }
 
-  String? idFrom;
-  String? id;
-  String? idTo;
+  int? idFrom;
+  int? id;
+  int? chatId;
+  int? idTo;
   String? content;
 
   Map<String, dynamic> toJson() {

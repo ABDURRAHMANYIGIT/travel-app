@@ -44,7 +44,7 @@ class ChatsDataController extends GetxController {
     if (_socketID.value != null) {
       for (var chat in _chats) {
         await _databaseServices.broadcastAuthentication(
-            channelName: 'chat_${chat.id}', socketID: _socketID.value!);
+            channelName: 'private-chat_${chat.id}', socketID: _socketID.value!);
 
         final String? broadcastToken =
             await SharedPreference().getBroadcastToken();
@@ -54,7 +54,7 @@ class ChatsDataController extends GetxController {
             <String, dynamic>{
               'event': 'pusher:subscribe',
               'data': <String, dynamic>{
-                'channel': 'chat_${chat.id}',
+                'channel': 'private-chat_${chat.id}',
                 'auth': broadcastToken
               }
             },
@@ -86,7 +86,7 @@ class ChatsDataController extends GetxController {
           subscriptionSucceeded();
           break;
         case PusherEvent.MESSAGE_SENT:
-          // messageSentOrReceived();
+          messageSentOrReceived();
           break;
         case PusherEvent.MESSAGE_RECEIVED:
           // messageReceived();
@@ -110,7 +110,7 @@ class ChatsDataController extends GetxController {
 
   void listenToWebSocket() {
     _channel.stream.listen(
-      (dynamic message) {
+      (dynamic message) async {
         // Check if the message contains the string 'ping'
         if (message.toString().contains('ping')) {
           // If it does, send a response with the string 'pong'
@@ -140,7 +140,15 @@ class ChatsDataController extends GetxController {
     ever(_newWebSocketEvent, _handleWebSocketEvent);
     ever(_pusherEvent, _handlePusherEvent);
     ever(_socketID, _handleSocketIDEvent);
+    initializeChatAndMessagePairing();
     listenToWebSocket();
+  }
+
+  Future<void> initializeChatAndMessagePairing() async {
+    for (var chat in _chats) {
+      _messagesPairedWithChats.add({'chat': chat, 'messages': []});
+    }
+    update();
   }
 
   Future<void> getChats() async {
@@ -174,8 +182,8 @@ class ChatsDataController extends GetxController {
         if (_authController.getAuthUser?.id != null) {
           final newMessage = MessageObject()
             ..content = message
-            ..idFrom = _authController.getAuthUser!.id.toString()
-            ..idTo = receiverId.toString();
+            ..idFrom = _authController.getAuthUser!.id
+            ..idTo = receiverId;
           messagesPairedWithChats[targetChatIndex]['messages'].add(newMessage);
           // Force update the list to trigger UI update
           messagesPairedWithChats[targetChatIndex] = Map<String, dynamic>.from(
@@ -188,5 +196,31 @@ class ChatsDataController extends GetxController {
     }
     update();
     return result;
+  }
+
+  void messageSentOrReceived() async {
+    final MessageObject _newMessage = getChatMessageFromSocket();
+
+    final targetChatIndex = _messagesPairedWithChats
+        .indexWhere((element) => element['chat'].id == _newMessage.chatId);
+
+    _messagesPairedWithChats[targetChatIndex]['messages'].add(_newMessage);
+
+    _messagesPairedWithChats[targetChatIndex] =
+        Map<String, dynamic>.from(_messagesPairedWithChats[targetChatIndex]);
+    update();
+  }
+
+  MessageObject getChatMessageFromSocket() {
+    final Map<String, dynamic> _wsMessage =
+        _websocketDecodedMessage.value as Map<String, dynamic>;
+    final Map<String, dynamic> _newMessageData =
+        jsonDecode(_wsMessage['data'] as String) as Map<String, dynamic>;
+    final Map<String, dynamic> _newMessageJSON =
+        _newMessageData['message'] as Map<String, dynamic>;
+
+    final MessageObject chatMessage = MessageObject.fromJson(_newMessageJSON);
+
+    return chatMessage;
   }
 }

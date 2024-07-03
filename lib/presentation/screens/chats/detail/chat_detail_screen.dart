@@ -53,8 +53,7 @@ class ChatDetailScreen extends StatelessWidget {
                         final element =
                             chatDetailScreenController.messages[index];
                         if (element.idFrom ==
-                            chatDetailScreenController.targetUser?.id
-                                .toString()) {
+                            chatDetailScreenController.targetUser?.id) {
                           return ReceivedMessage(
                             messageObject: element,
                           );
