@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../../../data/models/chat_message.dart';
 
@@ -9,7 +10,9 @@ class ReceivedMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.blueGrey,
+      constraints: BoxConstraints(maxWidth: Get.width * 0.7),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      color: Colors.grey,
       child: Text(messageObject.content ?? ''),
     );
   }

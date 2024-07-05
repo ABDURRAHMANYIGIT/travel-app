@@ -60,7 +60,11 @@ class DatabaseServices implements BaseServices {
   }
 
   @override
-  Future<bool> sendMessage({required String message, required int receiverId}) {
-    return api.sendMessage(message: message, receiverId: receiverId);
+  Future<bool> sendMessage(
+      {required String message,
+      required int receiverId,
+      required String socketId}) {
+    return api.sendMessage(
+        message: message, receiverId: receiverId, socketId: socketId);
   }
 }

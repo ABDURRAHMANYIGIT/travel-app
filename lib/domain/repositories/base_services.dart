@@ -14,5 +14,8 @@ abstract class BaseServices {
   Future<List<MessageObject>> getChatMessages({required int chatId, int? page});
   Future<bool> broadcastAuthentication(
       {required String channelName, required String socketID});
-  Future<bool> sendMessage({required String message, required int receiverId});
+  Future<bool> sendMessage(
+      {required String message,
+      required int receiverId,
+      required String socketId});
 }

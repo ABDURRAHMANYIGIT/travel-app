@@ -276,7 +276,9 @@ class API implements BaseServices {
 
   @override
   Future<bool> sendMessage(
-      {required String message, required int receiverId}) async {
+      {required String message,
+      required int receiverId,
+      required String socketId}) async {
     String? token;
     token = await SharedPreference().getToken();
     bool result = false;
@@ -285,7 +287,13 @@ class API implements BaseServices {
       try {
         final http.Response response = await http.post(
           Uri.parse('$domain/message/send'),
-          headers: _Headers().getHeaderWithAuthToken(token),
+          headers: {
+            'Authorization': token,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-Socket-ID': socketId,
+          },
           body: convert.jsonEncode(
             <String, dynamic>{
               'content': message,

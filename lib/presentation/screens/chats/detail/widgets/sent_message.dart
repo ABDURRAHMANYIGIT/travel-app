@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../../../data/models/chat_message.dart';
 
@@ -8,7 +9,9 @@ class SentMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.red,
+      constraints: BoxConstraints(maxWidth: Get.width * 0.7),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      color: Colors.blue,
       child: Text(messageObject.content ?? ''),
     );
   }

@@ -36,14 +36,14 @@ class ChatDetailScreen extends StatelessWidget {
       ),
       appBar: CustomAppBar(
         appbarType: AppbarType.withTitle,
+        color: Colors.black,
         title: chatDetailScreenController.targetUser?.name ?? '',
       ),
       content: Obx(() {
         return Column(
           children: [
             chatDetailScreenController.messages.isNotEmpty
-                ? Container(
-                    color: Colors.amber,
+                ? SizedBox(
                     height: Get.height * 0.7,
                     width: Get.width,
                     child: ListView.builder(
@@ -54,11 +54,22 @@ class ChatDetailScreen extends StatelessWidget {
                             chatDetailScreenController.messages[index];
                         if (element.idFrom ==
                             chatDetailScreenController.targetUser?.id) {
-                          return ReceivedMessage(
-                            messageObject: element,
+                          return Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.only(bottom: 16),
+                              child: ReceivedMessage(
+                                messageObject: element,
+                              ),
+                            ),
                           );
                         } else {
-                          return SentMessage(messageObject: element);
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 16),
+                            child: Align(
+                                alignment: Alignment.centerRight,
+                                child: SentMessage(messageObject: element)),
+                          );
                         }
                       },
                     ),

@@ -26,6 +26,8 @@ class ChatsDataController extends GetxController {
       _messagesPairedWithChats;
   final Rxn<PusherEvent> _pusherEvent = Rxn<PusherEvent>();
   PusherEvent? get pusherEvent => _pusherEvent.value;
+  final RxBool _isConnectionEstablised = RxBool(false);
+  final RxBool _subscriptionSucceeded = RxBool(false);
 
   @override
   void onInit() async {
@@ -77,6 +79,7 @@ class ChatsDataController extends GetxController {
   }
 
   void _handlePusherEvent(PusherEvent? event) {
+    log('Pusher Event Handler Tetiklendi');
     if (event != null) {
       switch (event) {
         case PusherEvent.CONNECTION_ESTABLISHED:
@@ -86,7 +89,7 @@ class ChatsDataController extends GetxController {
           subscriptionSucceeded();
           break;
         case PusherEvent.MESSAGE_SENT:
-          messageSentOrReceived();
+          //messageSentOrReceived();
           break;
         case PusherEvent.MESSAGE_RECEIVED:
           // messageReceived();
@@ -96,10 +99,12 @@ class ChatsDataController extends GetxController {
   }
 
   void subscriptionSucceeded() {
+    _subscriptionSucceeded.value = true;
     log(_websocketDecodedMessage.value?.toString() ?? 'No message');
   }
 
   void connectionEstablished() {
+    _isConnectionEstablised.value = true;
     if (_websocketDecodedMessage.value?['data'] != null) {
       final dynamic data = _websocketDecodedMessage.value['data'] as dynamic;
       final dynamic dataMap = jsonDecode(data as String);
@@ -111,18 +116,28 @@ class ChatsDataController extends GetxController {
   void listenToWebSocket() {
     _channel.stream.listen(
       (dynamic message) async {
+        log('Received message: $message');
         // Check if the message contains the string 'ping'
         if (message.toString().contains('ping')) {
           // If it does, send a response with the string 'pong'
           _channel.sink.add(json.encode(
             {"event": "pusher:pong"},
           ));
-        }
-        log('Received message: $message');
-        final dynamic decodedMessage = jsonDecode(message as String);
-        _websocketDecodedMessage.value = decodedMessage;
-        if (decodedMessage['event'] != null) {
-          _newWebSocketEvent.value = decodedMessage['event'] as String?;
+        } else {
+          final dynamic decodedMessage = await jsonDecode(message as String);
+          _websocketDecodedMessage.value = decodedMessage;
+          if (_websocketDecodedMessage.value['event'] != null) {
+            if (!_isConnectionEstablised.value ||
+                !_subscriptionSucceeded.value) {
+              _newWebSocketEvent.value =
+                  _websocketDecodedMessage.value['event'] as String;
+            }
+
+            if (_websocketDecodedMessage.value['event'] ==
+                r'App\Events\MessageSent') {
+              messageSentOrReceived();
+            }
+          }
         }
       },
       onError: (dynamic error) {
@@ -152,7 +167,7 @@ class ChatsDataController extends GetxController {
   }
 
   Future<void> getChats() async {
-    _chats.value = await _databaseServices.getAllChats() ?? [];
+    _chats.value = await _databaseServices.getAllChats();
     update();
   }
 
@@ -170,31 +185,35 @@ class ChatsDataController extends GetxController {
 
   Future<bool> sendMessage(
       {required String message, required int receiverId}) async {
-    final result = await _databaseServices.sendMessage(
-        message: message, receiverId: receiverId);
-    if (result) {
-      final targetChatIndex = _messagesPairedWithChats.indexWhere((element) =>
-          element['chat'].userOneId == receiverId ||
-          element['chat'].userTwoId == receiverId);
+    var result = false;
 
-      if (targetChatIndex != -1) {
-        // Chat found, update its messages
-        if (_authController.getAuthUser?.id != null) {
-          final newMessage = MessageObject()
-            ..content = message
-            ..idFrom = _authController.getAuthUser!.id
-            ..idTo = receiverId;
-          messagesPairedWithChats[targetChatIndex]['messages'].add(newMessage);
-          // Force update the list to trigger UI update
-          messagesPairedWithChats[targetChatIndex] = Map<String, dynamic>.from(
-              messagesPairedWithChats[targetChatIndex]);
+    if (_socketID.value != null) {
+      result = await _databaseServices.sendMessage(
+          message: message, receiverId: receiverId, socketId: _socketID.value!);
+
+      if (result) {
+        final targetChatIndex = _messagesPairedWithChats.indexWhere((element) =>
+            element['chat'].userOneId == receiverId ||
+            element['chat'].userTwoId == receiverId);
+
+        if (targetChatIndex != -1) {
+          // Chat found, update its messages
+          if (_authController.getAuthUser?.id != null) {
+            final newMessage = MessageObject()
+              ..content = message
+              ..idFrom = _authController.getAuthUser!.id
+              ..idTo = receiverId;
+            _messagesPairedWithChats[targetChatIndex]['messages']
+                .add(newMessage);
+            _messagesPairedWithChats.refresh();
+          }
+        } else {
+          // Chat not found
+          log('CHAT NOT FOUND');
         }
-      } else {
-        // Chat not found
-        log('CHAT NOT FOUND');
       }
+      update();
     }
-    update();
     return result;
   }
 
@@ -205,9 +224,8 @@ class ChatsDataController extends GetxController {
         .indexWhere((element) => element['chat'].id == _newMessage.chatId);
 
     _messagesPairedWithChats[targetChatIndex]['messages'].add(_newMessage);
+    _messagesPairedWithChats.refresh();
 
-    _messagesPairedWithChats[targetChatIndex] =
-        Map<String, dynamic>.from(_messagesPairedWithChats[targetChatIndex]);
     update();
   }
 
